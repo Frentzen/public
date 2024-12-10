@@ -1,0 +1,47 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-github-repo
+  title: Create GitHub Repository
+  description: This template creates a new GitHub repository from a template.
+spec:
+  owner: backstage-team
+  type: service
+  parameters:
+    - title: Repository Information
+      required:
+        - name
+        - description
+        - owner
+      properties:
+        name:
+          type: string
+          title: Repository Name
+          description: Name of the new repository.
+        description:
+          type: string
+          title: Repository Description
+          description: Description of the repository.
+        owner:
+          type: string
+          title: GitHub Owner
+          description: GitHub username or organization name.
+  steps:
+    - id: fetch-template
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: 'https://github.com/YOUR_ORG/YOUR_TEMPLATE_REPO/archive/main.zip'
+        targetPath: './'
+    - id: publish-to-github
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        owner: ${{ parameters.owner }}
+        repo: ${{ parameters.name }}
+        description: ${{ parameters.description }}
+        access: public
+        token: '{{ secrets.githubToken }}'
+  outputs:
+    repoUrl: 'https://github.com/${{ parameters.owner }}/${{ parameters.name }}'
+  owner: backstage-team
