@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: create-github-repo
   title: Create GitHub Repository
-  description: This template creates a new GitHub repository from a template.
+  description: This template creates a new repository in GitHub from a template.
 spec:
   owner: backstage-team
   type: service
@@ -44,4 +44,4 @@ spec:
         token: '{{ secrets.githubToken }}'
   outputs:
     repoUrl: 'https://github.com/${{ parameters.owner }}/${{ parameters.name }}'
-  owner: backstage-team
+  # Removed duplicate owner field
